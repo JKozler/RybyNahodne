@@ -7,3 +7,5 @@ Program si můžete vyzkoušet, je popsaný.
 Hází se sítí, kterou si zvolíte v kódu (defaultně nastavena na 10 pro chytání a 30 pro výpočet nejlepšího místa).
 <br />
 Hledání nejlepšího místa chvilku trvá, tak prosím o strpení.
+<br />
+Můžete si také vyzkoušet, zda na daném místě je opravdu tolik ryb - program Vás vyzve.
