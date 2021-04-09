@@ -57,9 +57,9 @@ namespace RybyNahodne
             int p1 = Convert.ToInt32(Console.ReadLine());
             Console.Write("Zvolte radek, kam chcete hodit sit na poli od 0 do 990: ");
             int p2 = Convert.ToInt32(Console.ReadLine());
-            if (p1 >= 991)
+            if (p1 >= 1001 - velikostSite)
                 throw new ArgumentException("Mimo dosah");
-            if (p2 >= 991)
+            if (p2 >= 1001 - velikostSite)
                 throw new ArgumentException("Mimo dosah");
             else 
             {
