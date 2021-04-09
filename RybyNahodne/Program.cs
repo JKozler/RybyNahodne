@@ -13,30 +13,37 @@ namespace RybyNahodne
         {
             pole = NastavPole(1000, 100000);
             Console.WriteLine("Chytili jste celkem " + ChytRybuNaSit(10) + " rybu/ryb.");
+            Console.WriteLine("Probíhá výpočet nejlepšího umístění....");
+            Console.WriteLine("---------------------");
+            Console.WriteLine(ZjistitNejlepsiPozici());
+            Console.WriteLine();
+            Console.WriteLine("Chcete vyzkoušet? parametr x zadejte první a paremetr y jako druhý.");
+            Console.WriteLine("Chytili jste celkem " + ChytRybuNaSit(30) + " rybu/ryb.");
             Console.ReadKey();
         }
 
-        public static int[,] NastavPole(int velikost, int pocetRyb) 
+        public static int[,] NastavPole(int velikostVMetrech, int pocetRyb) 
         {
             Random random = new Random();
-            int[,] po = new int[velikost, velikost];
-            for (int i = 0; i < velikost; i++)
+            int[,] po = new int[velikostVMetrech, velikostVMetrech];
+            for (int i = 0; i < velikostVMetrech; i++)
             {
-                for (int y = 0; y < velikost; y++)
+                int pocetRybNaRadek = pocetRyb / velikostVMetrech;
+                for (int y = 0; y < velikostVMetrech; y++)
                 {
-                    if (pocetRyb == 0)
+                    if (pocetRybNaRadek == 0)
                     {
                         po[i, y] = 0;
                     }
-                    else if (pocetRyb < 10)
+                    else if (pocetRybNaRadek == 1)
                     {
-                        po[i, y] = pocetRyb;
-                        pocetRyb = 0;
+                        po[i, y] = pocetRybNaRadek;
+                        pocetRybNaRadek = 0;
                     }
                     else 
                     {
-                        po[i, y] = random.Next(0, 2);
-                        pocetRyb -= po[i, y];
+                        po[i, y] = random.Next(2);
+                        pocetRybNaRadek -= po[i, y];
                     }
                 }
             }
@@ -46,16 +53,54 @@ namespace RybyNahodne
         public static int ChytRybuNaSit(int velikostSite)
         {
             int celek = 0;
-            Console.Write("Zvolte bod, kam chcete hodit sit na poli od 0 do 1000: ");
+            Console.Write("Zvolte sloupec, kam chcete hodit sit na poli od 0 do 990: ");
             int p1 = Convert.ToInt32(Console.ReadLine());
-            for (int i = p1; i < p1 + velikostSite; i++)
+            Console.Write("Zvolte radek, kam chcete hodit sit na poli od 0 do 990: ");
+            int p2 = Convert.ToInt32(Console.ReadLine());
+            if (p1 >= 991)
+                throw new ArgumentException("Mimo dosah");
+            if (p2 >= 991)
+                throw new ArgumentException("Mimo dosah");
+            else 
             {
-                for (int y = p1; y < p1 + velikostSite; y++)
+                for (int i = p1; i < p1 + velikostSite; i++)
                 {
-                    celek += pole[i, y];
+                    for (int y = p2; y < p2 + velikostSite; y++)
+                    {
+                        celek += pole[i, y];
+                        Console.WriteLine("Chytil jste " + pole[i, y] + " ryb, pozice: x = " + i + " a y = " + y);
+                    }
                 }
             }
             return celek;
+        }
+
+        public static string ZjistitNejlepsiPozici()
+        {
+            int[] values = new int[940900];
+            int p1 = 0; int p2 = 0;
+            int help = 0;
+            while (help != 940900)
+            {
+                int celek = 0;
+                for (int i = p1; i < p1 + 30; i++)
+                {
+                    for (int y = p2; y < p2 + 30; y++)
+                    {
+                        celek += pole[i, y];
+                    }
+                }
+                values[help] = celek;
+                help++;
+                if (p1 == 969)
+                {
+                    p1 = 0;
+                    p2++;
+                }
+                else
+                    p1++;
+            }
+            return "Nejlepsi pozice je na y = " + (Convert.ToString(Array.IndexOf(values, values.Max()) / 970)) + ", x = " + Array.IndexOf(values, values.Max()) % 970 + ".";
         }
     }
 }
